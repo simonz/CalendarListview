@@ -1,18 +1,18 @@
 /***********************************************************************************
  * The MIT License (MIT)
-
+ * <p>
  * Copyright (c) 2014 Robin Chutaux
-
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
-
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
-
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,6 +25,7 @@ package com.andexert.calendarlistview.library;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,34 +40,32 @@ import java.util.HashMap;
 public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.ViewHolder> implements SimpleMonthView.OnDayClickListener {
     protected static final int MONTHS_IN_YEAR = 12;
     private final TypedArray typedArray;
-	private final Context mContext;
-	private final DatePickerController mController;
+    private final Context mContext;
+    private final DatePickerController mController;
     private final Calendar calendar;
     private final SelectedDays<CalendarDay> selectedDays;
     private final Integer firstMonth;
     private final Integer lastMonth;
 
-	public SimpleMonthAdapter(Context context, DatePickerController datePickerController, TypedArray typedArray) {
+    public SimpleMonthAdapter(Context context, DatePickerController datePickerController, TypedArray typedArray) {
         this.typedArray = typedArray;
         calendar = Calendar.getInstance();
         firstMonth = typedArray.getInt(R.styleable.DayPickerView_firstMonth, calendar.get(Calendar.MONTH));
         lastMonth = typedArray.getInt(R.styleable.DayPickerView_lastMonth, (calendar.get(Calendar.MONTH) - 1) % MONTHS_IN_YEAR);
         selectedDays = new SelectedDays<>();
-		mContext = context;
-		mController = datePickerController;
-		init();
-	}
+        mContext = context;
+        mController = datePickerController;
+        init();
+    }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
-    {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         final SimpleMonthView simpleMonthView = new SimpleMonthView(mContext, typedArray);
         return new ViewHolder(simpleMonthView, this);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position)
-    {
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
         final SimpleMonthView v = viewHolder.simpleMonthView;
         final HashMap<String, Integer> drawingParams = new HashMap<String, Integer>();
         int month;
@@ -82,15 +81,13 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         int selectedFirstYear = -1;
         int selectedLastYear = -1;
 
-        if (selectedDays.getFirst() != null)
-        {
+        if (selectedDays.getFirst() != null) {
             selectedFirstDay = selectedDays.getFirst().day;
             selectedFirstMonth = selectedDays.getFirst().month;
             selectedFirstYear = selectedDays.getFirst().year;
         }
 
-        if (selectedDays.getLast() != null)
-        {
+        if (selectedDays.getLast() != null) {
             selectedLastDay = selectedDays.getLast().day;
             selectedLastMonth = selectedDays.getLast().month;
             selectedLastYear = selectedDays.getLast().year;
@@ -112,12 +109,11 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     }
 
     public long getItemId(int position) {
-		return position;
-	}
+        return position;
+    }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         int itemCount = (((mController.getMaxYear() - calendar.get(Calendar.YEAR)) + 1) * MONTHS_IN_YEAR);
 
         if (firstMonth != -1)
@@ -129,12 +125,10 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         return itemCount;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         final SimpleMonthView simpleMonthView;
 
-        public ViewHolder(View itemView, SimpleMonthView.OnDayClickListener onDayClickListener)
-        {
+        public ViewHolder(View itemView, SimpleMonthView.OnDayClickListener onDayClickListener) {
             super(itemView);
             simpleMonthView = (SimpleMonthView) itemView;
             simpleMonthView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -143,97 +137,91 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         }
     }
 
-	protected void init() {
+    protected void init() {
         if (typedArray.getBoolean(R.styleable.DayPickerView_currentDaySelected, false))
             onDayTapped(new CalendarDay(System.currentTimeMillis()));
-	}
+    }
 
-	public void onDayClick(SimpleMonthView simpleMonthView, CalendarDay calendarDay) {
-		if (calendarDay != null) {
-			onDayTapped(calendarDay);
+    public void onDayClick(SimpleMonthView simpleMonthView, CalendarDay calendarDay) {
+        if (calendarDay != null) {
+            onDayTapped(calendarDay);
         }
-	}
+    }
 
-	protected void onDayTapped(CalendarDay calendarDay) {
-		mController.onDayOfMonthSelected(calendarDay.year, calendarDay.month, calendarDay.day);
-		setSelectedDay(calendarDay);
-	}
+    protected void onDayTapped(CalendarDay calendarDay) {
+        mController.onDayOfMonthSelected(calendarDay.year, calendarDay.month, calendarDay.day);
+        setSelectedDay(calendarDay);
+    }
 
-	public void setSelectedDay(CalendarDay calendarDay) {
-        if (selectedDays.getFirst() != null && selectedDays.getLast() == null)
-        {
+    public void setSelectedDay(CalendarDay calendarDay) {
+        if (selectedDays.getFirst() != null && selectedDays.getLast() == null && selectedDays.getFirst().compareTo(calendarDay) < 0) {
             selectedDays.setLast(calendarDay);
 
-            if (selectedDays.getFirst().month < calendarDay.month)
-            {
+            if (selectedDays.getFirst().month < calendarDay.month) {
                 for (int i = 0; i < selectedDays.getFirst().month - calendarDay.month - 1; ++i)
                     mController.onDayOfMonthSelected(selectedDays.getFirst().year, selectedDays.getFirst().month + i, selectedDays.getFirst().day);
             }
 
             mController.onDateRangeSelected(selectedDays);
-        }
-        else if (selectedDays.getLast() != null)
-        {
+        } else if (selectedDays.getLast() != null) {
             selectedDays.setFirst(calendarDay);
             selectedDays.setLast(null);
-        }
-        else
+        } else {
             selectedDays.setFirst(calendarDay);
+        }
 
-		notifyDataSetChanged();
-	}
+        notifyDataSetChanged();
+    }
 
-	public static class CalendarDay implements Serializable
-    {
+    public static class CalendarDay implements Serializable, Comparable<CalendarDay> {
         private static final long serialVersionUID = -5456695978688356202L;
         private Calendar calendar;
 
-		int day;
-		int month;
-		int year;
+        int day;
+        int month;
+        int year;
 
-		public CalendarDay() {
-			setTime(System.currentTimeMillis());
-		}
+        public CalendarDay() {
+            setTime(System.currentTimeMillis());
+        }
 
-		public CalendarDay(int year, int month, int day) {
-			setDay(year, month, day);
-		}
+        public CalendarDay(int year, int month, int day) {
+            setDay(year, month, day);
+        }
 
-		public CalendarDay(long timeInMillis) {
-			setTime(timeInMillis);
-		}
+        public CalendarDay(long timeInMillis) {
+            setTime(timeInMillis);
+        }
 
-		public CalendarDay(Calendar calendar) {
-			year = calendar.get(Calendar.YEAR);
-			month = calendar.get(Calendar.MONTH);
-			day = calendar.get(Calendar.DAY_OF_MONTH);
-		}
+        public CalendarDay(Calendar calendar) {
+            year = calendar.get(Calendar.YEAR);
+            month = calendar.get(Calendar.MONTH);
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+        }
 
-		private void setTime(long timeInMillis) {
-			if (calendar == null) {
-				calendar = Calendar.getInstance();
+        private void setTime(long timeInMillis) {
+            if (calendar == null) {
+                calendar = Calendar.getInstance();
             }
-			calendar.setTimeInMillis(timeInMillis);
-			month = this.calendar.get(Calendar.MONTH);
-			year = this.calendar.get(Calendar.YEAR);
-			day = this.calendar.get(Calendar.DAY_OF_MONTH);
-		}
+            calendar.setTimeInMillis(timeInMillis);
+            month = this.calendar.get(Calendar.MONTH);
+            year = this.calendar.get(Calendar.YEAR);
+            day = this.calendar.get(Calendar.DAY_OF_MONTH);
+        }
 
-		public void set(CalendarDay calendarDay) {
-		    year = calendarDay.year;
-			month = calendarDay.month;
-			day = calendarDay.day;
-		}
+        public void set(CalendarDay calendarDay) {
+            year = calendarDay.year;
+            month = calendarDay.month;
+            day = calendarDay.day;
+        }
 
-		public void setDay(int year, int month, int day) {
-			this.year = year;
-			this.month = month;
-			this.day = day;
-		}
+        public void setDay(int year, int month, int day) {
+            this.year = year;
+            this.month = month;
+            this.day = day;
+        }
 
-        public Date getDate()
-        {
+        public Date getDate() {
             if (calendar == null) {
                 calendar = Calendar.getInstance();
             }
@@ -242,8 +230,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             final StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("{ year: ");
             stringBuilder.append(year);
@@ -255,36 +242,45 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 
             return stringBuilder.toString();
         }
+
+        @Override
+        public int compareTo(@Nullable CalendarDay calendarDay) {
+            if (calendarDay == null) {
+                return 1;
+            }
+            int diff = year - calendarDay.year;
+            if (diff == 0) {
+                diff = month - calendarDay.month;
+                if (diff == 0) {
+                    diff = day - calendarDay.day;
+                }
+            }
+            return diff;
+        }
     }
 
-    public SelectedDays<CalendarDay> getSelectedDays()
-    {
+    public SelectedDays<CalendarDay> getSelectedDays() {
         return selectedDays;
     }
 
-    public static class SelectedDays<K> implements Serializable
-    {
+    public static class SelectedDays<K> implements Serializable {
         private static final long serialVersionUID = 3942549765282708376L;
         private K first;
         private K last;
 
-        public K getFirst()
-        {
+        public K getFirst() {
             return first;
         }
 
-        public void setFirst(K first)
-        {
+        public void setFirst(K first) {
             this.first = first;
         }
 
-        public K getLast()
-        {
+        public K getLast() {
             return last;
         }
 
-        public void setLast(K last)
-        {
+        public void setLast(K last) {
             this.last = last;
         }
     }
