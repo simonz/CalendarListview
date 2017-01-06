@@ -13,6 +13,7 @@
         <attr name="textSizeDayName" format="dimension" />
         <attr name="headerMonthHeight" format="dimension" />
         <attr name="selectedDayRadius" format="dimension" />
+        <attr name="daySeparatorWidth" format="dimension" />
         <attr name="calendarHeight" format="dimension" />
         <attr name="enablePreviousDay" format="boolean" />
         <attr name="currentDaySelected" format="boolean" />
