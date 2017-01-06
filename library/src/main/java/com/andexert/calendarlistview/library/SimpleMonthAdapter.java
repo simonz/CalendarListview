@@ -114,15 +114,15 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 
     @Override
     public int getItemCount() {
-        int itemCount = (((mController.getMaxYear() - calendar.get(Calendar.YEAR)) + 1) * MONTHS_IN_YEAR);
+//        int itemCount = (((mController.getMaxYear() - calendar.get(Calendar.YEAR)) + 1) * MONTHS_IN_YEAR);
+//
+//        if (firstMonth != -1)
+//            itemCount -= firstMonth;
+//
+//        if (lastMonth != -1)
+//            itemCount -= (MONTHS_IN_YEAR - lastMonth) - 1;
 
-        if (firstMonth != -1)
-            itemCount -= firstMonth;
-
-        if (lastMonth != -1)
-            itemCount -= (MONTHS_IN_YEAR - lastMonth) - 1;
-
-        return itemCount;
+        return mController.getMonthCount();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
