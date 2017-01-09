@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="white_30">#4cffffff</color>
+    <color name="white_50">#80ffffff</color>
+    <color name="white_80">#CCffffff</color>
+    <color name="white_90">#e5ffffff</color>
+    <color name="t_gray">#475361</color>
+    <color name="t_gray_20">#33475361</color>
+    <color name="t_gray_30">#4C475361</color>
+    <color name="t_gray_50">#80475361</color>
+    <color name="t_gray_80">#CC475361</color>
+    <color name="point_1">#01bac3</color>
+    <color name="point_1_10">#1901bac3</color>
+    <color name="point_1_30">#4C00bac3</color>
+    <color name="point_1_90">#e500bac3</color>
+    <color name="bg_gray">#efefef</color>
+    <color name="text_black">#222222</color>
+    <color name="text_black_50">#80222222</color>
+    <color name="text_black_80">#CC222222</color>
+    <color name="text_black_30">#4C222222</color>
+    <color name="gunmetal">#485361</color>
+    <color name="gunmetal_50">#80485361</color>
+    <color name="t_black">#343434</color>
+    <color name="t_black_50">#80343434</color>
+</resources>

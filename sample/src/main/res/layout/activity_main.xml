@@ -1,5 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:calendar="http://schemas.android.com/apk/res-auto"
+    xmlns:calendar="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,6 +9,16 @@
         android:id="@+id/pickerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        calendar:drawRoundRect="true"/>
+        calendar:calendarHeight="282dp"
+        calendar:colorCurrentDay="@color/text_black"
+        calendar:colorNormalDay="@color/text_black"
+        calendar:colorPreviousDay="@color/text_black_30"
+        calendar:colorSelectedDayBackground="@color/point_1"
+        calendar:colorSelectedDayText="@color/white"
+        calendar:enablePreviousDay="false"
+        calendar:headerMonthHeight="0dp"
+        calendar:selectedDayRadius="23dp"
+        calendar:textSizeDay="18sp"
+        calendar:textSizeDayName="0dp" />
 
 </RelativeLayout>
